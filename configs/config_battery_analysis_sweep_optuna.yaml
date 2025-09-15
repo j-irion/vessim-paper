@@ -1,0 +1,35 @@
+defaults:
+  - override hydra/launcher: joblib
+  - override hydra/sweeper: optuna
+  - override hydra/sweeper/sampler: nsgaii
+
+hydra:
+  sweeper:
+    sampler:
+      seed: 123
+      population_size: 50
+    direction: [ minimize, minimize ]
+    study_name: multi-objective
+    storage: null
+    n_trials: 350
+    n_jobs: 5
+    params:
+      wind_system_capacity: range(0, 33000, step=3000)
+      solar_system_capacity: range(0, 44000, step=4000)
+      battery_capacity: range(0, 67500, step=7500)
+
+
+wind_system_capacity: 40000
+solar_system_capacity: 30000
+wind_turbine_model: GE 1.5sle
+battery_capacity: 60000
+single_cell_capacity: 19.14
+
+file_paths:
+  power_data: ${hydra:runtime.cwd}/data/power_data_ce.csv
+  wind_data: ${hydra:runtime.cwd}/data/wind_data_berkeley.csv
+  solar_data: ${hydra:runtime.cwd}/data/solar_data_berkeley.csv
+  solar_config: ${hydra:runtime.cwd}/data/pvwatts_config.json
+  wind_config: ${hydra:runtime.cwd}/data/windpower_config.json
+  wind_turbines: ${hydra:runtime.cwd}/data/Wind_Turbines.csv
+  carbon_data: ${hydra:runtime.cwd}/data/US-CAL-CISO_2024_hourly.csv
